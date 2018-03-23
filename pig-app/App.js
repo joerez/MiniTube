@@ -82,6 +82,7 @@ constructor(props) {
   this.state = {
     dice: 3,
     player: 1,
+    isPlayerOne: true
   };
 }
 
@@ -90,14 +91,38 @@ constructor(props) {
     this.setState({dice: number})
   }
 
-  hold(){
-    this.setState({player: 0 ? 1 + 1 : 0 + 1})
+  changePlayer(){
+    console.log(this.state.player)
+
+    // var isPlayerOne = true // Player one
+    // isPlayerOne = !isPlayerOne  // player two
+    // isPlayerOne = !isPlayerOne  // player one
+    //
+    // var activePlayer = isPlayerOne ? "player One" : "player two"
+
+    this.setState({
+      player: 0 ? 1 + 1 : 0 + 1,
+      isPlayerOne: !this.state.isPlayerOne
+    })
   }
 
+
+  // player1: if (this.state.player1 === "activePlayer") {return "waitingPlayer"} else {return "activePlayer"},
+  // player2: if (this.state.player2 === "activePlayer") {return "waitingPlayer"} else {return "activePlayer"},
+
+
   render() {
+
+    const player1 = this.state.isPlayerOne ? "activePlayer" : "waitingPlayer";
+    const player2 = this.state.isPlayerOne ? "waitingPlayer" : "activePlayer";
+
+    const playerTurn = this.state.isPlayerOne ? styles.activePlayer : styles.waitingPlayer;
+    const playerTurn2 = this.state.isPlayerOne ? styles.waitingPlayer : styles.activePlayer;
+
     return (
       <View style={styles.DetailsScreen}>
-        <View style={styles.player1}>
+
+        <View style={playerTurn}>
           <Text style={styles.playerName}>Player 1</Text>
           <View style={styles.totalScore}>
             <Text style={styles.number}>30</Text>
@@ -110,7 +135,8 @@ constructor(props) {
           </View>
 
         </View>
-        <View style={styles.player2}>
+
+        <View style={playerTurn2}>
           <Text style={styles.playerName}>Player 2</Text>
           <View style={styles.totalScore}>
             <Text style={styles.number}>33</Text>
@@ -132,7 +158,7 @@ constructor(props) {
 
 
         <View style={styles.roll}><Button title="Roll Dice" onPress={() => this.changeDice(Math.floor(Math.random() * 6))}></Button></View>
-        <View style={styles.hold}><Button title="Hold" onPress={() => this.hold()}></Button></View>
+        <View style={styles.hold}><Button title="Hold" onPress={() => this.changePlayer()}></Button></View>
 
 
       </View>
@@ -203,7 +229,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start'
   },
-  player1: {
+  activePlayer: {
     width: '50%',
     backgroundColor: 'pink',
     display: 'flex',
@@ -211,7 +237,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center'
   },
-  player2: {
+  waitingPlayer: {
     width: '50%',
     backgroundColor: '#fab1a0',
     display: 'flex',
